@@ -1,0 +1,25 @@
+# Optional serverless deployment (Cloudflare Workers). VPS is the default path.
+#   npx wrangler kv namespace create FRESHLAB_KV   -> paste id below
+#   npx wrangler secret put JWT_SECRET / ADMIN_PASSWORD / EDGE_API_TOKEN
+#   npm run build --prefix ../web && npm run deploy:worker
+name = "freshlab-cloud"
+main = "src/entry/worker.ts"
+compatibility_date = "2024-12-01"
+
+[assets]
+directory = "../web/dist"
+not_found_handling = "single-page-application"
+run_worker_first = ["/api/*"]
+
+[[kv_namespaces]]
+binding = "FRESHLAB_KV"
+id = "REPLACE_ME"
+
+[triggers]
+crons = ["* * * * *"]
+
+[vars]
+EDGE_URL = "https://edge.example.com"
+TZ_NAME = "Asia/Bangkok"
+DOOR_RELAY = "door"
+DOOR_UNLOCK_SECONDS = "5"

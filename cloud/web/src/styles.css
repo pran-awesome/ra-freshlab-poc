@@ -1,0 +1,31 @@
+:root { --bg:#0f1712; --card:#17221b; --fg:#e8f3ea; --muted:#8aa293; --accent:#5fd18b; --danger:#ef6b6b; --line:#26352b; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font-family: system-ui, "Noto Sans Thai", sans-serif; }
+.screen { max-width:420px; margin:0 auto; padding:32px 16px; display:flex; flex-direction:column; gap:16px; }
+.admin { max-width:1000px; margin:0 auto; padding:24px 16px; display:flex; flex-direction:column; gap:16px; }
+.admin header { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.brand { margin:0; color:var(--accent); }
+.card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:10px; overflow-x:auto; }
+.card.ok { border-color:var(--accent); }
+h2 { margin:0 0 4px; font-size:1.05rem; }
+input, select, button { font:inherit; padding:10px 12px; border-radius:10px; border:1px solid var(--line); background:#0c130f; color:var(--fg); }
+button { background:var(--accent); color:#06210f; border:none; font-weight:600; cursor:pointer; }
+button:disabled { opacity:.5; }
+button.big { padding:18px; font-size:1.2rem; }
+button.danger { background:var(--danger); color:#2a0505; }
+.muted { color:var(--muted); } .small { font-size:.85rem; }
+.err { color:var(--danger); }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; }
+.stat b { font-size:1.8rem; } .stat span, .stat small { color:var(--muted); }
+.relays { display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+.relay { display:flex; align-items:center; gap:8px; padding:6px 10px; border:1px solid var(--line); border-radius:10px; }
+.dot { width:10px; height:10px; border-radius:50%; background:#3a4a40; } .dot.on { background:var(--accent); }
+.pill { padding:4px 10px; border-radius:999px; font-size:.85rem; } .pill.on { background:#1f4d31; } .pill.off { background:#4d1f1f; }
+table { border-collapse:collapse; width:100%; font-size:.9rem; }
+td, th { padding:6px 8px; border-bottom:1px solid var(--line); text-align:left; white-space:nowrap; }
+td button { padding:4px 8px; margin-right:4px; }
+.row { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.row input[type=number] { width:120px; }
+.days { display:flex; gap:6px; } .days label { display:flex; align-items:center; gap:2px; font-size:.85rem; }
+.events { list-style:none; padding:0; margin:0; font-size:.88rem; display:flex; flex-direction:column; gap:4px; }
+.events time { color:var(--muted); }

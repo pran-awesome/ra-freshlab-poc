@@ -1,0 +1,10 @@
+# Laptop / CI: no Nano attached, simulated serial.
+#   docker compose -f docker-compose.dev.yml up --build
+services:
+  edge:
+    build: .
+    environment:
+      EDGE_SERIAL_PORT: mock
+      EDGE_API_TOKEN: dev-token
+    ports:
+      - "8080:8080"

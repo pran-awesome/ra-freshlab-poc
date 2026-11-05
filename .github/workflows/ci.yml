@@ -1,0 +1,50 @@
+name: ci
+on:
+  push:
+  pull_request:
+
+jobs:
+  edge:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: edge } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -r requirements-dev.txt
+      - run: python -m pytest -q
+
+  cloud:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - run: npm ci --prefix cloud/api && npm ci --prefix cloud/web
+      - run: npm run typecheck --prefix cloud/api
+      - run: npm test --prefix cloud/api
+      - run: npm run build --prefix cloud/web && npm run build --prefix cloud/api
+
+  firmware:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: arduino/compile-sketches@v1
+        with:
+          fqbn: arduino:avr:nano
+          sketch-paths: firmware/nano/freshlab_nano
+          libraries: |
+            - name: DHT sensor library
+            - name: Adafruit Unified Sensor
+
+  edge-image-arm64:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        with:
+          context: edge
+          platforms: linux/arm64
+          push: false

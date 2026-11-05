@@ -1,0 +1,25 @@
+# VPS stack: cloud app + Caddy (automatic HTTPS).
+#   cp .env.example .env && docker compose up -d --build
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - freshlab-data:/data
+    ports:
+      - "127.0.0.1:8787:8787"
+
+  caddy:
+    image: caddy:2.8-alpine
+    restart: unless-stopped
+    ports: ["80:80", "443:443"]
+    command: caddy reverse-proxy --from ${PUBLIC_HOST:-localhost} --to app:8787
+    volumes:
+      - caddy-data:/data
+    depends_on: [app]
+    profiles: ["https"]
+
+volumes:
+  freshlab-data:
+  caddy-data:

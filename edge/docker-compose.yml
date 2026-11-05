@@ -1,0 +1,25 @@
+# Raspberry Pi stack: edge API + Cloudflare Tunnel (outbound only, no port forwarding).
+#   cp .env.example .env   # fill in values
+#   docker compose up -d --build
+services:
+  edge:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    devices:
+      - "${NANO_DEVICE:-/dev/ttyUSB0}:/dev/ttyNANO"
+    environment:
+      EDGE_SERIAL_PORT: /dev/ttyNANO
+    # Only on localhost for on-site debugging; the internet reaches it via the tunnel.
+    ports:
+      - "127.0.0.1:8080:8080"
+
+  tunnel:
+    image: cloudflare/cloudflared:2024.12.2
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN}
+    depends_on:
+      - edge
+    profiles: ["tunnel"]
